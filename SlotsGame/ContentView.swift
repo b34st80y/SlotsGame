@@ -34,9 +34,9 @@ struct ContentView: View {
                 SlotsView(symState: $slotState, symbols: symbols)
                 Spacer()
                 Spacer()
-                SpinButton(credits: $credits, slotState: $slotState)
+                SpinButton(credits: $credits, slotState: $slotState, numStates: symbols.count)
                 Spacer()
-                }.padding(.all)
+            }.padding(.all)
 
         }
     }
@@ -93,6 +93,8 @@ struct SlotCard: View {
 struct SpinButton: View {
     @Binding var credits: Int
     @Binding var slotState: [Int]
+    var numStates: Int
+    
     let winnings = 50
     let cost = 5
     var body: some View{
@@ -104,9 +106,9 @@ struct SpinButton: View {
             }
             
             // Randomize Slots
-            self.slotState[0] = Int.random(in: 0...self.slotState.count-1)
-            self.slotState[1] = Int.random(in: 0...self.slotState.count-1)
-            self.slotState[2] = Int.random(in: 0...self.slotState.count-1)
+            self.slotState = self.slotState.map({ _ in
+                Int.random(in: 0...self.numStates-1)
+            })
             
             // Check Slots
             if self.slotState[0] == self.slotState[1] &&
